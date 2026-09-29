@@ -26,6 +26,21 @@ It also has:
 - **What S do you need?** Enter your quantity and effective entry, and it solves for the final price at which you pass the current #1 and #3.
 - **Board mark vs settlement price.** A chart of both prices for every sweep.
 
+## Free-trade detector
+
+Rule 12 charges `fee = max(1%, discount)`, not both added together. A trade priced 1% or more better than the close for one side makes that side pay the discount back *instead of* the 1% fee, so it trades for free. The key on the other side pays the 1% fee and loses the discount. Keys cost nothing (millions are registered, each minted 10,000 POLF), so throwaway keys can absorb the cost of every trade. Free trading turns the contest into flipping long and short on every price move:
+
+| On the close-1 price path through sweep 1,257 | Best score |
+|---|---|
+| Paying the 1% fee, perfect foresight, ~44 contracts | +384 |
+| Zero fee, naive 15-minute momentum | +436 |
+| Zero fee, perfect foresight | +5,720 |
+| Actual leaders (exact posted positions, at the Hyperliquid price) | about +1,048 |
+
+The panel polls the `close1` room every 10 s and flags every trade priced 1% or more away from the latest posted reference price. It shows the keys trading for free, the throwaway keys absorbing the cost, and the latest flagged trades. In the retained `close1` history at sweep 1,257, 1,416 of 4,911 trades (29%) were flagged.
+
+Suggested fix for close-2: `fee = 1% + max(0, discount)`.
+
 ## How it works
 
 - It is one static `index.html` with no build, no server and no keys. Your browser reads `https://technocore.chat/r/<room>/export` directly (CORS is open) for `d-close1-price`, `d-close1-pnl`, `d-close1-positions` and `d-close1-state`, then polls for new sweeps every 45 s.

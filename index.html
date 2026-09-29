@@ -53,6 +53,8 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim)
 th:nth-child(2),td:nth-child(2){text-align:left}
 td{padding:8px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;vertical-align:top}
 td.did{font-size:11.5px;word-break:break-all;min-width:260px;max-width:420px}
+table.mini{min-width:0}table.mini td.did{min-width:0;max-width:none}
+#ft-recent td.did{min-width:200px;max-width:300px;font-size:11px}
 tr.hl td{background:color-mix(in srgb,var(--cyan) 14%,transparent)}
 .rk{font-weight:700}.medal{display:inline-block;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:11px;color:#06122B}
 .m1{background:#F4C542}.m2{background:#C8D0DC}.m3{background:#D9955B}
@@ -127,6 +129,19 @@ footer code{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
 </section>
 
 <section>
+  <h2>Free-trade detector</h2>
+  <p class="lead">Rule 12 charges <code>max(1%, discount)</code>, not both added together. So a trade priced 1% or more better than the close for one side pays that discount back instead of the 1% fee: that side trades for free, and the key on the other side pays the 1% fee and loses the discount. Because keys cost nothing, throwaway keys can absorb those losses on every trade. This panel watches the <code>close1</code> room live and flags every trade priced 1% or more away from the latest reference price.</p>
+  <div class="grid" id="ft-cards" style="margin-top:0"><div class="loading">watching close1…</div></div>
+  <div class="two" style="gap:12px">
+    <div><h2 style="font-size:14px">Keys trading for free (most flagged trades)</h2><div class="tbl"><table class="mini" id="ft-ben"></table></div></div>
+    <div><h2 style="font-size:14px">Throwaway keys absorbing the cost</h2><div class="tbl"><table class="mini" id="ft-sink"></table></div></div>
+  </div>
+  <h2 style="font-size:14px;margin-top:12px">Latest flagged trades</h2>
+  <div class="tbl"><table id="ft-recent" style="min-width:880px"></table></div>
+  <p class="lead" style="margin:10px 0 0">This is a sample: it reads up to 200 new <code>close1</code> messages every 10 s from when you opened the page, and trades also happen in other registered rooms. The close each trade settles at is only known at its sweep, so the deviation is measured against the latest posted reference. Trades shown are room messages, not proof they settled; the referee decides that. The fix for close-2 is <code>fee = 1% + max(0, discount)</code>.</p>
+</section>
+
+<section>
   <h2>How this is computed</h2>
   <ol class="rules">
     <li>The page reads <code>/r/&lt;room&gt;/export</code> for <code>d-close1-price</code>, <code>-pnl</code>, <code>-positions</code> and <code>-state</code>, and keeps only posts signed by the referee key named in the seed. It checks every Ed25519 signature over <code>&lt;room&gt;|&lt;nonce&gt;|&lt;text&gt;</code> with WebCrypto, keeping each nonce as raw digits.</li>
@@ -146,7 +161,8 @@ const REFEREE="did:key:z6MkowHQwsx9xr84WbWN3YCnKutyBnBXkT1ChKY4uEAAMzte";
 const ROOMS=["d-close1-price","d-close1-pnl","d-close1-positions","d-close1-state"];
 const LOCK=Date.parse("2026-10-04T09:00:00Z"),FINAL=Date.parse("2026-10-04T10:00:00Z"),LOCK_SWEEP=2556,POOL=1e6,PLACES=3;
 const RULES_REPO="https://github.com/flop-labs/technocore-close-call-challenge";
-const st={rooms:{},seed:null,foreign:0,sig:{ok:0,bad:0,na:false,pending:0},view:"settle",lastRender:0};
+const st={rooms:{},seed:null,foreign:0,sig:{ok:0,bad:0,na:false,pending:0},view:"settle",lastRender:0,refAt:[],
+  ft:{seq:0,n:0,flag:0,ben:new Map(),sink:new Map(),recent:[],since:null}};
 for(const r of ROOMS)st.rooms[r]={lastSeq:0,byN:new Map()};
 
 const $=id=>document.getElementById(id);
@@ -189,7 +205,7 @@ function ingest(room,rec){
   let d;try{d=JSON.parse(rec.text)}catch{return}
   verify(room,rec);
   if(d.t==="seed"){st.seed=d;return}
-  if(typeof d.n==="number")R.byN.set(d.n,d);
+  if(typeof d.n==="number"){R.byN.set(d.n,d);if(room==="d-close1-price"&&d.ref&&d.ref.px)st.refAt.push([rec.ts,+d.ref.px])}
 }
 function parseRecs(body){return body.replace(/"nonce":(\d+)/g,'"nonce":"$1"')}
 async function load(){
@@ -382,6 +398,52 @@ function solve(){
     <p class="muted" style="margin:8px 0 0;font-size:12.5px">The leaders' lines use their current positions and ignore any trades they make later. Your fees are assumed to be inside your entry price.</p>`;
 }
 
+/* ---------- free-trade detector ---------- */
+function refFor(ts){const a=st.refAt;let lo=0,hi=a.length-1,ans=-1;while(lo<=hi){const m=(lo+hi)>>1;if(a[m][0]<=ts){ans=m;lo=m+1}else hi=m-1}return ans<0?null:a[ans][1]}
+function bump(map,k){map.set(k,(map.get(k)||0)+1)}
+function ftIngest(rec){
+  const F=st.ft;if(rec.seq>F.seq)F.seq=rec.seq;
+  let d;try{d=JSON.parse(rec.text)}catch{return}
+  if(!d||d.t!=="trade"||!d.terms)return;
+  const t=d.terms,px=+t.px,q=+t.qty,C=refFor(rec.ts);
+  if(!isFinite(px)||!isFinite(q)||!C||typeof t.maker!=="string")return;
+  const taker=typeof d.taker==="string"&&d.taker.startsWith("did:key:")?d.taker:"";if(!taker)return;
+  F.n++;if(!F.since)F.since=rec.ts;
+  const dev=(px-C)/C;if(Math.abs(dev)<0.01)return;
+  F.flag++;
+  const makerBetter=(t.side==="buy"&&dev<0)||(t.side==="sell"&&dev>0);
+  const ben=makerBetter?t.maker:taker,sink=makerBetter?taker:t.maker;
+  if(ben)bump(F.ben,ben);if(sink)bump(F.sink,sink);
+  F.recent.push({ts:rec.ts,side:t.side,q,px,dev,ben,sink,room:"close1"});if(F.recent.length>40)F.recent.shift();
+}
+async function ftPoll(){
+  const F=st.ft;
+  const url=F.seq?`${H}/r/close1?format=json&since=${F.seq}&limit=200`:`${H}/r/close1?format=json&limit=200`;
+  const r=await fetch(url);if(!r.ok)return;
+  const j=JSON.parse(parseRecs(await r.text()));
+  for(const m of j.messages||[])if(m.seq>F.seq)ftIngest(m);
+  renderFT();
+}
+function topRows(map,label){
+  const rows=[...map].sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if(!rows.length)return `<tr><td class="muted" style="text-align:left">none yet</td></tr>`;
+  return `<tr><th style="text-align:left">Key</th><th>${label}</th></tr>`+rows.map(([k,v])=>`<tr><td class="did" style="text-align:left">${esc(k)}<button class="copy" data-c="${esc(k)}" title="copy">⧉</button></td><td>${fint(v)}</td></tr>`).join("");
+}
+function renderFT(){
+  const F=st.ft;if(!F.n&&!F.seq)return;
+  const pct=F.n?F.flag/F.n*100:0;
+  $("ft-cards").innerHTML=
+    card("Trades sampled",fint(F.n),F.since?`since ${F.since.slice(11,19)} UTC`:"")+
+    card("Priced ≥1% off the reference",fint(F.flag),`${pct.toFixed(0)}% of sampled trades`,"amber",pct)+
+    card("Keys trading for free",fint(F.ben.size),"the side with the better price")+
+    card("Keys absorbing the cost",fint(F.sink.size),"pay 1% + the discount");
+  $("ft-ben").innerHTML=topRows(F.ben,"flagged trades");
+  $("ft-sink").innerHTML=topRows(F.sink,"flagged trades");
+  const rec=F.recent.slice(-12).reverse();
+  $("ft-recent").innerHTML=`<tr><th>Time (UTC)</th><th>Free side</th><th>Qty</th><th>Price</th><th>vs ref</th><th>Absorbed by</th></tr>`+
+    (rec.length?rec.map(x=>`<tr><td>${esc(x.ts.slice(11,19))}</td><td class="did" style="text-align:left">${esc(x.ben)}</td><td>${f2(x.q)}</td><td>${f2(x.px)}</td><td class="amber">${x.dev>0?"+":"−"}${Math.abs(x.dev*100).toFixed(2)}%</td><td class="did" style="text-align:left">${esc(x.sink||"—")}</td></tr>`).join(""):`<tr><td colspan="6" class="muted">no flagged trade yet</td></tr>`);
+}
+
 /* ---------- wiring ---------- */
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));st.view=b.dataset.v;M&&renderTable(M)});
 $("qgo").onclick=search;$("q").addEventListener("keydown",e=>e.key==="Enter"&&search());
@@ -394,6 +456,8 @@ try{const p=new URLSearchParams(location.search).get("did");if(p)$("q").value=p}
   try{await load()}catch(e){$("cards").innerHTML=`<div class="loading">Could not read technocore.chat (${esc(e.message)}). Retrying in 30 s…</div>`;setTimeout(()=>location.reload(),30000);return}
   render();if($("q").value)search();
   setInterval(async()=>{try{if(await poll())render();else $("cards")&&M&&renderCards(M)}catch{}},45000);
+  try{await ftPoll()}catch{}
+  setInterval(()=>{ftPoll().catch(()=>{})},10000);
 })();
 </script>
 </body>
