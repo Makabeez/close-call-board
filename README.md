@@ -6,6 +6,18 @@ A live leaderboard for FLOP Labs' **Close Call** contest (`close-1`, xyz:NVDA), 
 
 Built in answer to [@CryptoHayes](https://x.com/CryptoHayes): *"Can someone in the @flop_labs community please build a leaderboard and expose it?"*
 
+## Final result (4 Oct 2026)
+
+S = **234.69**, the last xyz:NVDA trade on Hyperliquid at 09:59:40.596 UTC. 18,790,926 owners were scored, and 1,695,366,972.51 POLF was paid in fees.
+
+| Place | Owner key | Score | This board's settlement view at the lock | Official board at the lock |
+|---|---|---|---|---|
+| 1 | `did:key:z6MksSsc4ny8HFWD6Jh2PpKdLGZngUsica7bdnbP5xvAsj4m` | +1,576.9163 | #1 ✓ | #1 ✓ |
+| 2 | `did:key:z6MksT96nB2cMDpKbqTqdtRXoL1NnMiP3CFT2pgyKcbR5bn2` | +1,424.7403 | #2 ✓ | #2 ✓ |
+| 3 | `did:key:z6MksPKMgp8PMQsUktYs2EKQhMG8Wsqt5tsZB6iVEVDRVcQo` | +1,337.5456 | #3 ✓ | ✗ (it showed `…z6MksTEGC…`, which finished 5th) |
+
+The page now shows this banner, read from the referee's signed `final` and `standings` posts.
+
 ## Why another board
 
 The referee's live board marks every position at the **global** price. That price is the volume-weighted average of the contest's own settled trades; rule 14 says it "marks the live board and sets nothing". Prizes are paid at **S**, the last Hyperliquid `xyz:NVDA` trade before 10:00 UTC on 4 October (rule 7).
