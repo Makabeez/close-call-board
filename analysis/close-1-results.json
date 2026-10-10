@@ -1,0 +1,280 @@
+{
+ "contest": "close-1",
+ "S": 234.69,
+ "source": "https://challenges.technocore.chat/close-1/ (public trades only; 499,321 private-room trades are redacted)",
+ "stats": {
+  "sweeps": 2556,
+  "settled": 7606301,
+  "redacted": 499321,
+  "self_trades": 28015,
+  "fees": 1622085448.9101324,
+  "waived_fills": 5154479,
+  "base_skipped": 452949720.47316825,
+  "gap_paid_by_free_side": 863123294.6934956,
+  "base_paid_by_sink_side": 452949720.47316825,
+  "settled_notional": 60595129517.21324
+ },
+ "traded_keys": 9405335,
+ "keys_with_fee_free_fills": 2061542,
+ "keys_that_paid_for_others": 3236971,
+ "positive_keys": 2878830,
+ "score_percentiles": {
+  "p50": -109.07,
+  "p90": 182.63,
+  "p99": 442.76,
+  "p99_9": 521.98
+ },
+ "top25_public_replay": [
+  {
+   "rank": 1,
+   "key": "did:key:z6MksSsc4ny8HFWD6Jh2PpKdLGZngUsica7bdnbP5xvAsj4m",
+   "score": 1576.9163,
+   "position": 48.18,
+   "trades": 31,
+   "fee_free_fills": 31,
+   "paid_for_others": 0,
+   "official_score": 1576.9163
+  },
+  {
+   "rank": 2,
+   "key": "did:key:z6MksT96nB2cMDpKbqTqdtRXoL1NnMiP3CFT2pgyKcbR5bn2",
+   "score": 1424.7403,
+   "position": -46.93,
+   "trades": 35,
+   "fee_free_fills": 35,
+   "paid_for_others": 0,
+   "official_score": 1424.7403
+  },
+  {
+   "rank": 3,
+   "key": "did:key:z6MksPKMgp8PMQsUktYs2EKQhMG8Wsqt5tsZB6iVEVDRVcQo",
+   "score": 1337.5456,
+   "position": 47.12,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1337.5456
+  },
+  {
+   "rank": 4,
+   "key": "did:key:z6MksMRmpvBM3gLjZzrpXZuZVoi3Sg6mUZpbc4sgSLnLNjUX",
+   "score": 1334.1818,
+   "position": 47.17,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1334.1818
+  },
+  {
+   "rank": 5,
+   "key": "did:key:z6MksTEGCUCfsQncGLne6wFhf4hto4ZuJozbJ9PL4rSuHC3n",
+   "score": 1305.7823,
+   "position": -46.1,
+   "trades": 44,
+   "fee_free_fills": 44,
+   "paid_for_others": 0,
+   "official_score": 1305.7823
+  },
+  {
+   "rank": 6,
+   "key": "did:key:z6Mkqo9aN6PaJbbM2rc9vdMy4URzH7acQV3Kwaycq7qo7Up6",
+   "score": 1295.1304,
+   "position": 47.01,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1295.1304
+  },
+  {
+   "rank": 7,
+   "key": "did:key:z6MkimMKmJ7LC7D5PQijJmDCdroyLqFCNmUCVE93Gv2jt8Pb",
+   "score": 1289.5469,
+   "position": -45.29,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": 1289.5469
+  },
+  {
+   "rank": 8,
+   "key": "did:key:z6MksSVWejuGNK6q2KDdB1f5UeLWbNzQ1A8eBg7kt3VKbdyr",
+   "score": 1288.8879,
+   "position": 46.97,
+   "trades": 31,
+   "fee_free_fills": 31,
+   "paid_for_others": 0,
+   "official_score": 1288.8879
+  },
+  {
+   "rank": 9,
+   "key": "did:key:z6MksG9LfT7s8ym2LbjFMXAbZzFNN93vbe71CvycvWReiWim",
+   "score": 1265.3366,
+   "position": 46.88,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1265.3366
+  },
+  {
+   "rank": 10,
+   "key": "did:key:z6Mks2yiSD3KrYUje6FyrYUJnFGwBvvTss366o7ZD6ZVBREF",
+   "score": 1263.862,
+   "position": 46.88,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1263.862
+  },
+  {
+   "rank": 11,
+   "key": "did:key:z6MkrdcD9j1T78yGcfQcCNXEw7KcMHgqnu3WTbSCAU4XNtcA",
+   "score": 1212.215,
+   "position": 46.66,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1212.215
+  },
+  {
+   "rank": 12,
+   "key": "did:key:z6MkwekbumrfekbFzCWtfZoSeXym4w1WPTEDzEvh8qCVmNWC",
+   "score": 1205.6677,
+   "position": 46.58,
+   "trades": 24,
+   "fee_free_fills": 24,
+   "paid_for_others": 0,
+   "official_score": 1205.6677
+  },
+  {
+   "rank": 13,
+   "key": "did:key:z6Mkp8bjNkaFXWN7izdEzwrHa63GY7e6LReNKA2r7ob9p8Uw",
+   "score": 1197.2078,
+   "position": 46.6,
+   "trades": 22,
+   "fee_free_fills": 22,
+   "paid_for_others": 0,
+   "official_score": 1197.2078
+  },
+  {
+   "rank": 14,
+   "key": "did:key:z6MksTC6PvCGrdLBq7DVBCv2FVZfjDec2B3HN5EJwWP3RCBD",
+   "score": 1194.5929,
+   "position": -46.83,
+   "trades": 35,
+   "fee_free_fills": 35,
+   "paid_for_others": 0,
+   "official_score": 1194.5929
+  },
+  {
+   "rank": 15,
+   "key": "did:key:z6MksN9eVkstgp9Six7PXvATX7SyiAhEHDHuePqVYgmbiAbK",
+   "score": 1185.1898,
+   "position": -45.95,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": 1185.1898
+  },
+  {
+   "rank": 16,
+   "key": "did:key:z6MkwepVsT85tx3DmVAGTqHaQkxRD9wLsQuv4uDP8TrmkQvE",
+   "score": 1177.3831,
+   "position": -44.3,
+   "trades": 24,
+   "fee_free_fills": 24,
+   "paid_for_others": 0,
+   "official_score": 1177.3831
+  },
+  {
+   "rank": 17,
+   "key": "did:key:z6MkimEy9Fu1kESY894JUbcWrupp9ZgaJ2WEr4BoEhPemaFk",
+   "score": 1174.8719,
+   "position": 46.45,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1174.8719
+  },
+  {
+   "rank": 18,
+   "key": "did:key:z6MkqoWpu9rApgdNcfxLaGAmzRQnpcf2gSWjT6o4ysLTq5gE",
+   "score": 1173.9216,
+   "position": -45.9,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": 1173.9216
+  },
+  {
+   "rank": 19,
+   "key": "did:key:z6Mkwf2KTVcAFnpMusB7RcYLri8ZfCiwyYM7CkhWX1CaHiSv",
+   "score": 1169.5206,
+   "position": -45.24,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": 1169.5206
+  },
+  {
+   "rank": 20,
+   "key": "did:key:z6Mkei8LVrYh4McECgrGS3XuJ8vGkPtFeibDPAXYCbgdceep",
+   "score": 1165.7105,
+   "position": -44.67,
+   "trades": 47,
+   "fee_free_fills": 47,
+   "paid_for_others": 0,
+   "official_score": 1165.7105
+  },
+  {
+   "rank": 21,
+   "key": "did:key:z6Mkgrd3FQekWvEfLYKZzMV49bWMV9AqYuexreEiRyzZg7sw",
+   "score": 1165.2256,
+   "position": 46.18,
+   "trades": 23,
+   "fee_free_fills": 23,
+   "paid_for_others": 0,
+   "official_score": 1165.2256
+  },
+  {
+   "rank": 22,
+   "key": "did:key:z6Mkf6fdgtBCsMmc6GRKg6v5PHzK3G714qfZXyg953FJu9ws",
+   "score": 1160.5675,
+   "position": -44.14,
+   "trades": 109,
+   "fee_free_fills": 109,
+   "paid_for_others": 0,
+   "official_score": 1160.5675
+  },
+  {
+   "rank": 23,
+   "key": "did:key:z6Mks3EfUiMwfJpaKm6pMoB3a1dM6tMMzHMHYMudXHELK9gH",
+   "score": 1159.2128,
+   "position": -45.84,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": 1159.2128
+  },
+  {
+   "rank": 24,
+   "key": "did:key:z6MkimH78G5jbHFxe6UALDfFLWLNCjgSrzr97sHJgKt7CqtX",
+   "score": 1153.7866,
+   "position": -44.21,
+   "trades": 24,
+   "fee_free_fills": 24,
+   "paid_for_others": 0,
+   "official_score": 1153.7866
+  },
+  {
+   "rank": 25,
+   "key": "did:key:z6MksQBTMxDSDddGBRptahQ7spZp45W4AGj5v4shNWxNbyr5",
+   "score": 1145.061,
+   "position": -45.78,
+   "trades": 27,
+   "fee_free_fills": 27,
+   "paid_for_others": 0,
+   "official_score": null
+  }
+ ],
+ "official_top25_matched_exactly": 24
+}
